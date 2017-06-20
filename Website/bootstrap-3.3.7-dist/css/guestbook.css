@@ -1,0 +1,254 @@
+.g_footer {
+    width: 100%;
+    font-size: 12px;
+    height: 250px;
+    background-color: #28536C;
+    color: white;
+    margin: 0;
+    margin-top: 40px;
+    text-align: center;
+}
+
+.g_nav {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    margin: 0;
+    height: 80px;
+    text-align: center;
+    background-color: #28536C;
+    z-index: 2;
+}
+
+.gb_logo {
+    position: relative;
+    background-color: #629E9A;
+    width: 100%;
+    height: 100%;
+    color: white;
+    margin: 0px;
+    top: 15px;
+    padding-top: 20px;
+    border-radius: 25px;
+    box-shadow: 5px 5px 5px black;
+}
+
+.gb_logo_min {
+    position: relative;
+    background-color: #629E9A;
+    width: 100px;
+    height: 80%;
+    color: white;
+    margin: 0px;
+    top: 10px;
+    padding-top: 15px;
+    border-radius: 25px;
+    display: none;
+}
+
+.gb_navbar_min {
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+    background-color: #28536C;
+    display: none;
+}
+
+.gb_navbar_min_toggle {
+    width: 60px;
+    height: 60px;
+    margin-top: 10px;
+    background: none;
+    font-size: 20px;
+    color: white;
+    border: 1px solid white;
+    vertical-align: top;
+    display: none;
+}
+
+.gb_nav_btn {
+    padding-top: 15px;
+    font-size: 20px;
+    margin-left: 10px;
+    padding-bottom: 12px;
+    margin-top: 10px;
+    background: none;
+    color: white;
+    border: none;
+    vertical-align: top;
+    width: 120px;
+}
+
+.gb_nav_btn:hover {
+    position: relative;
+    top: 1px;
+    border: 1px solid white;
+    border-radius: 5px;
+}
+
+.header {
+    width: 400px;
+    height: 100px;
+    color: #629E9A;
+    border: 3px solid #629E9A;
+}
+
+.center {
+    margin: 30 auto;
+}
+
+.header_top {
+    position: relative;
+    width: 150px;
+    font-size: 15px;
+    margin: 0 auto;
+    color: #629E9A;
+    top: -10px;
+    background-color: white;
+    text-align: center;
+}
+
+.book_head {
+    font-size: 25px;
+    color: white;
+    border-bottom: 1px solid white;
+}
+
+.book_option {
+    width: 200px;
+    font-size: 18px;
+    color: #629E9A;
+    border: none;
+    border-bottom: 1px solid white;
+    text-decoration: none;
+    outline: none;
+}
+
+.book {
+    position: relative;
+    top: -500px;
+}
+
+.book_display_nav {
+    position: relative;
+    top: -150px;
+    text-align: center;
+}
+
+.book_display {
+    width: 25px;
+    height: 25px;
+    border-radius: 12px;
+    background-color: white;
+    display: inline-block;
+    margin: 3px;
+}
+
+.book_img {
+    width: 100%;
+    height: 80%;
+    position: relative;
+    z-index: -1;
+    top: -10px;
+    border: 1px solid #629E9A;
+    border-radius: 25px;
+}
+
+.book_btn {
+    width: 100px;
+    height: 30px;
+    font-size: 15px;
+    color: white;
+    border: 3px solid #296EE8;
+    background-color: #296EE8;
+}
+
+.book_btn:hover {
+    border: 3px solid #28536C;
+    background-color: #28536C;
+}
+
+.amp_box {
+    width: 300px;
+    height: 300px;
+    margin: 10px;
+    color: white;
+    background-color: gray;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.amp_box_bg {
+    width: 300px;
+    height: 300px;
+    margin: 10px;
+    color: white;
+    background-color: #629E9A;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.prospect {
+    width: 90%;
+    height: 300;
+    border: 8px solid black;
+    border-radius: 10px;
+}
+
+.prospect_shop {
+    width: 90%;
+    height: 150px;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 8px;
+    margin: 5px;
+}
+
+.play_content {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 1px solid steelblue;
+    border-top: 10px solid steelblue;
+    border-radius: 25px;
+}
+
+.amp_box_text {
+    padding-top: 100px;
+    font-size: 50px;
+}
+
+.amp_box_img {
+    width: 100%;
+    height: 100%;
+}
+
+.g_footer .col-xs-2 {
+    padding-left: 23.5%;
+}
+
+.location_frame {
+    background-color: white;
+    padding: 10px;
+    height: auto;
+    border: 2px solid black;
+    border-radius: 10px;
+    position: relative;
+    top: -150px;
+    right: -20px;
+    z-index: 2;
+}
+
+@media screen and (max-width: 600px) {
+    .gb_navbar {
+        display: none;
+    }
+    .gb_logo {
+        display: none;
+    }
+    .gb_navbar_min_toggle {
+        display: block;
+    }
+    .g_footer .col-xs-2 {
+        padding-left: 6.5em;
+    }
+}

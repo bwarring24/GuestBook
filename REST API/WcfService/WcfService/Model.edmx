@@ -1,0 +1,2026 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="GuestBookModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Charge">
+          <Key>
+            <PropertyRef Name="charge_number" />
+          </Key>
+          <Property Name="charge_number" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="invoice_number" Type="int" Nullable="false" />
+          <Property Name="amount" Type="decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="charge_date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="employee_id" />
+          </Key>
+          <Property Name="employee_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="first_name" Type="varchar" MaxLength="50" />
+          <Property Name="last_name" Type="varchar" MaxLength="50" />
+          <Property Name="email" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="phone_number" Type="char" MaxLength="10" />
+          <Property Name="password_hash" Type="varchar(max)" />
+          <Property Name="salt" Type="varchar" MaxLength="255" />
+          <Property Name="access_level" Type="tinyint" Nullable="false" />
+          <Property Name="reset_key" Type="varchar" MaxLength="36" />
+        </EntityType>
+        <EntityType Name="EmployeeHasPermission">
+          <Key>
+            <PropertyRef Name="employee_id" />
+            <PropertyRef Name="permission_name" />
+          </Key>
+          <Property Name="employee_id" Type="int" Nullable="false" />
+          <Property Name="permission_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="priority" Type="tinyint" />
+        </EntityType>
+        <EntityType Name="Guest">
+          <Key>
+            <PropertyRef Name="guest_id" />
+          </Key>
+          <Property Name="guest_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="first_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="last_name" Type="varchar" MaxLength="50" />
+          <Property Name="email" Type="varchar" MaxLength="255" />
+          <Property Name="phone_number" Type="char" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Invoice">
+          <Key>
+            <PropertyRef Name="invoice_number" />
+          </Key>
+          <Property Name="invoice_number" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="reservation_number" Type="int" Nullable="false" />
+          <Property Name="paid" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="JobTitle">
+          <Key>
+            <PropertyRef Name="access_level" />
+          </Key>
+          <Property Name="access_level" Type="tinyint" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="description" Type="text" />
+        </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="log_id" />
+          </Key>
+          <Property Name="log_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="log_type" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="occured_at" Type="datetime" Nullable="false" />
+          <Property Name="employee_id" Type="int" />
+          <Property Name="message" Type="text" />
+          <Property Name="workstation" Type="varchar" MaxLength="255" />
+          <Property Name="event" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="LogType">
+          <Key>
+            <PropertyRef Name="log_type" />
+          </Key>
+          <Property Name="log_type" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="description" Type="text" />
+        </EntityType>
+        <EntityType Name="Permission">
+          <Key>
+            <PropertyRef Name="permission_name" />
+          </Key>
+          <Property Name="permission_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="description" Type="text" />
+          <Property Name="access_level" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reservation">
+          <Key>
+            <PropertyRef Name="reservation_number" />
+          </Key>
+          <Property Name="reservation_number" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="guest_id" Type="int" Nullable="false" />
+          <Property Name="start_date" Type="datetime" Nullable="false" />
+          <Property Name="end_date" Type="datetime" Nullable="false" />
+          <Property Name="checked_in" Type="bit" Nullable="false" />
+          <Property Name="checked_out" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="room_number" />
+          </Key>
+          <Property Name="room_number" Type="nchar" MaxLength="8" Nullable="false" />
+          <Property Name="room_type" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="max_occupancy" Type="smallint" Nullable="false" />
+          <Property Name="last_cleaned" Type="datetime" />
+        </EntityType>
+        <EntityType Name="RoomForReservation">
+          <Key>
+            <PropertyRef Name="reservation_number" />
+            <PropertyRef Name="room_number" />
+          </Key>
+          <Property Name="reservation_number" Type="int" Nullable="false" />
+          <Property Name="room_number" Type="nchar" MaxLength="8" Nullable="false" />
+          <Property Name="cost_for_stay" Type="decimal" Precision="19" Scale="4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RoomForTicket">
+          <Key>
+            <PropertyRef Name="room_number" />
+            <PropertyRef Name="ticket_number" />
+          </Key>
+          <Property Name="room_number" Type="nchar" MaxLength="8" Nullable="false" />
+          <Property Name="ticket_number" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RoomType">
+          <Key>
+            <PropertyRef Name="room_type" />
+          </Key>
+          <Property Name="room_type" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="cost_per_day" Type="decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="description" Type="text" />
+          <Property Name="guest_room" Type="bit" Nullable="false" />
+          <Property Name="rentable" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Ticket">
+          <Key>
+            <PropertyRef Name="ticket_number" />
+          </Key>
+          <Property Name="ticket_number" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ticket_type" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="opened_by" Type="int" />
+          <Property Name="assigned_to" Type="int" />
+          <Property Name="closed_by" Type="int" />
+          <Property Name="title" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="description" Type="text" />
+          <Property Name="date_opened" Type="datetime" Nullable="false" />
+          <Property Name="date_closed" Type="datetime" />
+          <Property Name="priority" Type="varchar" MaxLength="10" />
+          <Property Name="completed" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TicketType">
+          <Key>
+            <PropertyRef Name="ticket_type" />
+          </Key>
+          <Property Name="ticket_type" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="description" Type="text" />
+        </EntityType>
+        <EntityType Name="Token">
+          <Key>
+            <PropertyRef Name="token_id" />
+          </Key>
+          <Property Name="token_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="token" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="creation_date" Type="datetime" />
+          <Property Name="employee_id" Type="int" />
+          <Property Name="expiration_date" Type="datetime" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GuestBook.dbo.BookedRoom' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="BookedRoom">
+          <Key>
+            <PropertyRef Name="reservation_number" />
+            <PropertyRef Name="room_number" />
+            <PropertyRef Name="room_type" />
+            <PropertyRef Name="cost_for_stay" />
+            <PropertyRef Name="guest_id" />
+            <PropertyRef Name="start_date" />
+            <PropertyRef Name="end_date" />
+          </Key>
+          <Property Name="reservation_number" Type="int" Nullable="false" />
+          <Property Name="room_number" Type="nchar" MaxLength="8" Nullable="false" />
+          <Property Name="room_type" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="cost_for_stay" Type="decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="guest_id" Type="int" Nullable="false" />
+          <Property Name="start_date" Type="datetime" Nullable="false" />
+          <Property Name="end_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GuestBook.dbo.CheckInList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="CheckInList">
+          <Key>
+            <PropertyRef Name="first_name" />
+            <PropertyRef Name="start_date" />
+            <PropertyRef Name="end_date" />
+            <PropertyRef Name="reservation_number" />
+            <PropertyRef Name="guest_id" />
+            <PropertyRef Name="room_number" />
+            <PropertyRef Name="cost_for_stay" />
+          </Key>
+          <Property Name="first_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="last_name" Type="varchar" MaxLength="50" />
+          <Property Name="email" Type="varchar" MaxLength="255" />
+          <Property Name="phone_number" Type="char" MaxLength="10" />
+          <Property Name="start_date" Type="datetime" Nullable="false" />
+          <Property Name="end_date" Type="datetime" Nullable="false" />
+          <Property Name="reservation_number" Type="int" Nullable="false" />
+          <Property Name="guest_id" Type="int" Nullable="false" />
+          <Property Name="room_number" Type="nchar" MaxLength="8" Nullable="false" />
+          <Property Name="cost_for_stay" Type="decimal" Precision="19" Scale="4" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GuestBook.dbo.CheckOutList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="CheckOutList">
+          <Key>
+            <PropertyRef Name="guest_id" />
+            <PropertyRef Name="first_name" />
+            <PropertyRef Name="reservation_number" />
+            <PropertyRef Name="start_date" />
+            <PropertyRef Name="end_date" />
+            <PropertyRef Name="room_number" />
+            <PropertyRef Name="cost_for_stay" />
+          </Key>
+          <Property Name="guest_id" Type="int" Nullable="false" />
+          <Property Name="first_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="last_name" Type="varchar" MaxLength="50" />
+          <Property Name="email" Type="varchar" MaxLength="255" />
+          <Property Name="phone_number" Type="char" MaxLength="10" />
+          <Property Name="reservation_number" Type="int" Nullable="false" />
+          <Property Name="start_date" Type="datetime" Nullable="false" />
+          <Property Name="end_date" Type="datetime" Nullable="false" />
+          <Property Name="room_number" Type="nchar" MaxLength="8" Nullable="false" />
+          <Property Name="cost_for_stay" Type="decimal" Precision="19" Scale="4" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GuestBook.dbo.HousekeepingTicketList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="HousekeepingTicketList">
+          <Key>
+            <PropertyRef Name="ticket_number" />
+            <PropertyRef Name="ticket_type" />
+            <PropertyRef Name="opened_by" />
+            <PropertyRef Name="title" />
+            <PropertyRef Name="date_opened" />
+            <PropertyRef Name="completed" />
+            <PropertyRef Name="room_number" />
+            <PropertyRef Name="Expr1" />
+          </Key>
+          <Property Name="ticket_number" Type="int" Nullable="false" />
+          <Property Name="ticket_type" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="opened_by" Type="int" Nullable="false" />
+          <Property Name="assigned_to" Type="int" />
+          <Property Name="closed_by" Type="int" />
+          <Property Name="title" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="description" Type="text" />
+          <Property Name="date_opened" Type="datetime" Nullable="false" />
+          <Property Name="date_closed" Type="datetime" />
+          <Property Name="priority" Type="varchar" MaxLength="10" />
+          <Property Name="completed" Type="bit" Nullable="false" />
+          <Property Name="room_number" Type="nchar" MaxLength="8" Nullable="false" />
+          <Property Name="Expr1" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GuestBook.dbo.MaintenanceTicketList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MaintenanceTicketList">
+          <Key>
+            <PropertyRef Name="ticket_number" />
+            <PropertyRef Name="ticket_type" />
+            <PropertyRef Name="opened_by" />
+            <PropertyRef Name="title" />
+            <PropertyRef Name="date_opened" />
+            <PropertyRef Name="completed" />
+            <PropertyRef Name="room_number" />
+            <PropertyRef Name="Expr1" />
+          </Key>
+          <Property Name="ticket_number" Type="int" Nullable="false" />
+          <Property Name="ticket_type" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="opened_by" Type="int" Nullable="false" />
+          <Property Name="assigned_to" Type="int" />
+          <Property Name="closed_by" Type="int" />
+          <Property Name="title" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="description" Type="text" />
+          <Property Name="date_opened" Type="datetime" Nullable="false" />
+          <Property Name="date_closed" Type="datetime" />
+          <Property Name="priority" Type="varchar" MaxLength="10" />
+          <Property Name="completed" Type="bit" Nullable="false" />
+          <Property Name="room_number" Type="nchar" MaxLength="8" Nullable="false" />
+          <Property Name="Expr1" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GuestBook.dbo.OutstandingInvoice' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="OutstandingInvoice">
+          <Key>
+            <PropertyRef Name="invoice_number" />
+            <PropertyRef Name="guest_id" />
+            <PropertyRef Name="charge_number" />
+            <PropertyRef Name="amount" />
+            <PropertyRef Name="first_name" />
+          </Key>
+          <Property Name="invoice_number" Type="int" Nullable="false" />
+          <Property Name="guest_id" Type="int" Nullable="false" />
+          <Property Name="charge_number" Type="int" Nullable="false" />
+          <Property Name="amount" Type="decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="charge_date" Type="datetime" />
+          <Property Name="first_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="last_name" Type="varchar" MaxLength="50" />
+          <Property Name="email" Type="varchar" MaxLength="255" />
+          <Property Name="phone_number" Type="char" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK_Charge_Invoice">
+          <End Role="Invoice" Type="Self.Invoice" Multiplicity="1" />
+          <End Role="Charge" Type="Self.Charge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoice">
+              <PropertyRef Name="invoice_number" />
+            </Principal>
+            <Dependent Role="Charge">
+              <PropertyRef Name="invoice_number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_JobTitle">
+          <End Role="JobTitle" Type="Self.JobTitle" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JobTitle">
+              <PropertyRef Name="access_level" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="access_level" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeHasPermission_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EmployeeHasPermission" Type="Self.EmployeeHasPermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="employee_id" />
+            </Principal>
+            <Dependent Role="EmployeeHasPermission">
+              <PropertyRef Name="employee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeHasPermission_Permission">
+          <End Role="Permission" Type="Self.Permission" Multiplicity="1" />
+          <End Role="EmployeeHasPermission" Type="Self.EmployeeHasPermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permission">
+              <PropertyRef Name="permission_name" />
+            </Principal>
+            <Dependent Role="EmployeeHasPermission">
+              <PropertyRef Name="permission_name" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Reservation">
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="1" />
+          <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reservation">
+              <PropertyRef Name="reservation_number" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="reservation_number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Log_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Log" Type="Self.Log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="employee_id" />
+            </Principal>
+            <Dependent Role="Log">
+              <PropertyRef Name="employee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Log_LogType">
+          <End Role="LogType" Type="Self.LogType" Multiplicity="1" />
+          <End Role="Log" Type="Self.Log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LogType">
+              <PropertyRef Name="log_type" />
+            </Principal>
+            <Dependent Role="Log">
+              <PropertyRef Name="log_type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Permission_JobTitle">
+          <End Role="JobTitle" Type="Self.JobTitle" Multiplicity="1" />
+          <End Role="Permission" Type="Self.Permission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JobTitle">
+              <PropertyRef Name="access_level" />
+            </Principal>
+            <Dependent Role="Permission">
+              <PropertyRef Name="access_level" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservation_Guest">
+          <End Role="Guest" Type="Self.Guest" Multiplicity="1" />
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Guest">
+              <PropertyRef Name="guest_id" />
+            </Principal>
+            <Dependent Role="Reservation">
+              <PropertyRef Name="guest_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Room_RoomType">
+          <End Role="RoomType" Type="Self.RoomType" Multiplicity="1" />
+          <End Role="Room" Type="Self.Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoomType">
+              <PropertyRef Name="room_type" />
+            </Principal>
+            <Dependent Role="Room">
+              <PropertyRef Name="room_type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomForReservation_Reservation">
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="1" />
+          <End Role="RoomForReservation" Type="Self.RoomForReservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reservation">
+              <PropertyRef Name="reservation_number" />
+            </Principal>
+            <Dependent Role="RoomForReservation">
+              <PropertyRef Name="reservation_number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomForReservation_Room">
+          <End Role="Room" Type="Self.Room" Multiplicity="1" />
+          <End Role="RoomForReservation" Type="Self.RoomForReservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="room_number" />
+            </Principal>
+            <Dependent Role="RoomForReservation">
+              <PropertyRef Name="room_number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomForTicket_Room">
+          <End Role="Room" Type="Self.Room" Multiplicity="1" />
+          <End Role="RoomForTicket" Type="Self.RoomForTicket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="room_number" />
+            </Principal>
+            <Dependent Role="RoomForTicket">
+              <PropertyRef Name="room_number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomForTicket_Ticket">
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="1" />
+          <End Role="RoomForTicket" Type="Self.RoomForTicket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ticket">
+              <PropertyRef Name="ticket_number" />
+            </Principal>
+            <Dependent Role="RoomForTicket">
+              <PropertyRef Name="ticket_number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_Employee_assigned_to">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="employee_id" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="assigned_to" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_Employee_closed_by">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="employee_id" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="closed_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_Employee_opened_by">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="employee_id" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="opened_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_TicketType">
+          <End Role="TicketType" Type="Self.TicketType" Multiplicity="1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketType">
+              <PropertyRef Name="ticket_type" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="ticket_type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Token_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Token" Type="Self.Token" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="employee_id" />
+            </Principal>
+            <Dependent Role="Token">
+              <PropertyRef Name="employee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spAddEmployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="first_name" Type="varchar" Mode="In" />
+          <Parameter Name="last_name" Type="varchar" Mode="In" />
+          <Parameter Name="email" Type="varchar" Mode="In" />
+          <Parameter Name="phone_number" Type="char" Mode="In" />
+          <Parameter Name="password_hash" Type="varchar(max)" Mode="In" />
+          <Parameter Name="salt" Type="varchar" Mode="In" />
+          <Parameter Name="access_level" Type="tinyint" Mode="In" />
+        </Function>
+        <Function Name="spAddPermissionForEmployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="employee_id" Type="int" Mode="In" />
+          <Parameter Name="permission_name" Type="varchar" Mode="In" />
+          <Parameter Name="priority" Type="tinyint" Mode="In" />
+        </Function>
+        <Function Name="spAddRoomToReservation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="reservation_number" Type="int" Mode="In" />
+          <Parameter Name="room_type" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spCancelReservation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="reservation_number" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spChangePermissionPriorityForEmployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="employee_id" Type="int" Mode="In" />
+          <Parameter Name="permission_name" Type="varchar" Mode="In" />
+          <Parameter Name="new_priority" Type="tinyint" Mode="In" />
+        </Function>
+        <Function Name="spCreateHousekeepingTicketFromReservation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="reservation_number" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spCreateInvoice" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="reservation_number" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spCreateReservation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="guest_id" Type="int" Mode="In" />
+          <Parameter Name="start_date" Type="datetime" Mode="In" />
+          <Parameter Name="end_date" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="spRemovePermissionForEmployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="employee_id" Type="int" Mode="In" />
+          <Parameter Name="permission_name" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spRemoveRoomFromReservation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="reservation_number" Type="int" Mode="In" />
+          <Parameter Name="room_type" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spShowAllReservations" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="start_date" Type="datetime" Mode="In" />
+          <Parameter Name="end_date" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="spShowAvailableRooms" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="start_date" Type="datetime" Mode="In" />
+          <Parameter Name="end_date" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="spShowEmployeePermissions" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="employee_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spShowRoomsWithReservation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="reservation_number" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spUpdateEmployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="employee_id" Type="int" Mode="In" />
+          <Parameter Name="username" Type="varchar" Mode="In" />
+          <Parameter Name="first_name" Type="varchar" Mode="In" />
+          <Parameter Name="last_name" Type="varchar" Mode="In" />
+          <Parameter Name="email" Type="varchar" Mode="In" />
+          <Parameter Name="phone_number" Type="char" Mode="In" />
+          <Parameter Name="password_hash" Type="varchar(max)" Mode="In" />
+          <Parameter Name="salt" Type="varchar" Mode="In" />
+          <Parameter Name="access_level" Type="tinyint" Mode="In" />
+          <Parameter Name="reset_key" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="GuestBookModelStoreContainer">
+          <EntitySet Name="Charge" EntityType="Self.Charge" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeHasPermission" EntityType="Self.EmployeeHasPermission" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Guest" EntityType="Self.Guest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Invoice" EntityType="Self.Invoice" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="JobTitle" EntityType="Self.JobTitle" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LogType" EntityType="Self.LogType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Permission" EntityType="Self.Permission" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reservation" EntityType="Self.Reservation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Room" EntityType="Self.Room" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoomForReservation" EntityType="Self.RoomForReservation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoomForTicket" EntityType="Self.RoomForTicket" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoomType" EntityType="Self.RoomType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ticket" EntityType="Self.Ticket" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TicketType" EntityType="Self.TicketType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Token" EntityType="Self.Token" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BookedRoom" EntityType="Self.BookedRoom" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [BookedRoom].[reservation_number] AS [reservation_number], 
+    [BookedRoom].[room_number] AS [room_number], 
+    [BookedRoom].[room_type] AS [room_type], 
+    [BookedRoom].[cost_for_stay] AS [cost_for_stay], 
+    [BookedRoom].[guest_id] AS [guest_id], 
+    [BookedRoom].[start_date] AS [start_date], 
+    [BookedRoom].[end_date] AS [end_date]
+    FROM [dbo].[BookedRoom] AS [BookedRoom]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="CheckInList" EntityType="Self.CheckInList" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [CheckInList].[first_name] AS [first_name], 
+    [CheckInList].[last_name] AS [last_name], 
+    [CheckInList].[email] AS [email], 
+    [CheckInList].[phone_number] AS [phone_number], 
+    [CheckInList].[start_date] AS [start_date], 
+    [CheckInList].[end_date] AS [end_date], 
+    [CheckInList].[reservation_number] AS [reservation_number], 
+    [CheckInList].[guest_id] AS [guest_id], 
+    [CheckInList].[room_number] AS [room_number], 
+    [CheckInList].[cost_for_stay] AS [cost_for_stay]
+    FROM [dbo].[CheckInList] AS [CheckInList]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="CheckOutList" EntityType="Self.CheckOutList" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [CheckOutList].[guest_id] AS [guest_id], 
+    [CheckOutList].[first_name] AS [first_name], 
+    [CheckOutList].[last_name] AS [last_name], 
+    [CheckOutList].[email] AS [email], 
+    [CheckOutList].[phone_number] AS [phone_number], 
+    [CheckOutList].[reservation_number] AS [reservation_number], 
+    [CheckOutList].[start_date] AS [start_date], 
+    [CheckOutList].[end_date] AS [end_date], 
+    [CheckOutList].[room_number] AS [room_number], 
+    [CheckOutList].[cost_for_stay] AS [cost_for_stay]
+    FROM [dbo].[CheckOutList] AS [CheckOutList]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="HousekeepingTicketList" EntityType="Self.HousekeepingTicketList" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [HousekeepingTicketList].[ticket_number] AS [ticket_number], 
+    [HousekeepingTicketList].[ticket_type] AS [ticket_type], 
+    [HousekeepingTicketList].[opened_by] AS [opened_by], 
+    [HousekeepingTicketList].[assigned_to] AS [assigned_to], 
+    [HousekeepingTicketList].[closed_by] AS [closed_by], 
+    [HousekeepingTicketList].[title] AS [title], 
+    [HousekeepingTicketList].[description] AS [description], 
+    [HousekeepingTicketList].[date_opened] AS [date_opened], 
+    [HousekeepingTicketList].[date_closed] AS [date_closed], 
+    [HousekeepingTicketList].[priority] AS [priority], 
+    [HousekeepingTicketList].[completed] AS [completed], 
+    [HousekeepingTicketList].[room_number] AS [room_number], 
+    [HousekeepingTicketList].[Expr1] AS [Expr1]
+    FROM [dbo].[HousekeepingTicketList] AS [HousekeepingTicketList]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="MaintenanceTicketList" EntityType="Self.MaintenanceTicketList" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MaintenanceTicketList].[ticket_number] AS [ticket_number], 
+    [MaintenanceTicketList].[ticket_type] AS [ticket_type], 
+    [MaintenanceTicketList].[opened_by] AS [opened_by], 
+    [MaintenanceTicketList].[assigned_to] AS [assigned_to], 
+    [MaintenanceTicketList].[closed_by] AS [closed_by], 
+    [MaintenanceTicketList].[title] AS [title], 
+    [MaintenanceTicketList].[description] AS [description], 
+    [MaintenanceTicketList].[date_opened] AS [date_opened], 
+    [MaintenanceTicketList].[date_closed] AS [date_closed], 
+    [MaintenanceTicketList].[priority] AS [priority], 
+    [MaintenanceTicketList].[completed] AS [completed], 
+    [MaintenanceTicketList].[room_number] AS [room_number], 
+    [MaintenanceTicketList].[Expr1] AS [Expr1]
+    FROM [dbo].[MaintenanceTicketList] AS [MaintenanceTicketList]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="OutstandingInvoice" EntityType="Self.OutstandingInvoice" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [OutstandingInvoice].[invoice_number] AS [invoice_number], 
+    [OutstandingInvoice].[guest_id] AS [guest_id], 
+    [OutstandingInvoice].[charge_number] AS [charge_number], 
+    [OutstandingInvoice].[amount] AS [amount], 
+    [OutstandingInvoice].[charge_date] AS [charge_date], 
+    [OutstandingInvoice].[first_name] AS [first_name], 
+    [OutstandingInvoice].[last_name] AS [last_name], 
+    [OutstandingInvoice].[email] AS [email], 
+    [OutstandingInvoice].[phone_number] AS [phone_number]
+    FROM [dbo].[OutstandingInvoice] AS [OutstandingInvoice]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Charge_Invoice" Association="Self.FK_Charge_Invoice">
+            <End Role="Invoice" EntitySet="Invoice" />
+            <End Role="Charge" EntitySet="Charge" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_JobTitle" Association="Self.FK_Employee_JobTitle">
+            <End Role="JobTitle" EntitySet="JobTitle" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeHasPermission_Employee" Association="Self.FK_EmployeeHasPermission_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeHasPermission" EntitySet="EmployeeHasPermission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeHasPermission_Permission" Association="Self.FK_EmployeeHasPermission_Permission">
+            <End Role="Permission" EntitySet="Permission" />
+            <End Role="EmployeeHasPermission" EntitySet="EmployeeHasPermission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Reservation" Association="Self.FK_Invoice_Reservation">
+            <End Role="Reservation" EntitySet="Reservation" />
+            <End Role="Invoice" EntitySet="Invoice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Log_Employee" Association="Self.FK_Log_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Log" EntitySet="Log" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Log_LogType" Association="Self.FK_Log_LogType">
+            <End Role="LogType" EntitySet="LogType" />
+            <End Role="Log" EntitySet="Log" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Permission_JobTitle" Association="Self.FK_Permission_JobTitle">
+            <End Role="JobTitle" EntitySet="JobTitle" />
+            <End Role="Permission" EntitySet="Permission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservation_Guest" Association="Self.FK_Reservation_Guest">
+            <End Role="Guest" EntitySet="Guest" />
+            <End Role="Reservation" EntitySet="Reservation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_RoomType" Association="Self.FK_Room_RoomType">
+            <End Role="RoomType" EntitySet="RoomType" />
+            <End Role="Room" EntitySet="Room" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomForReservation_Reservation" Association="Self.FK_RoomForReservation_Reservation">
+            <End Role="Reservation" EntitySet="Reservation" />
+            <End Role="RoomForReservation" EntitySet="RoomForReservation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomForReservation_Room" Association="Self.FK_RoomForReservation_Room">
+            <End Role="Room" EntitySet="Room" />
+            <End Role="RoomForReservation" EntitySet="RoomForReservation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomForTicket_Room" Association="Self.FK_RoomForTicket_Room">
+            <End Role="Room" EntitySet="Room" />
+            <End Role="RoomForTicket" EntitySet="RoomForTicket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomForTicket_Ticket" Association="Self.FK_RoomForTicket_Ticket">
+            <End Role="Ticket" EntitySet="Ticket" />
+            <End Role="RoomForTicket" EntitySet="RoomForTicket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_Employee_assigned_to" Association="Self.FK_Ticket_Employee_assigned_to">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Ticket" EntitySet="Ticket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_Employee_closed_by" Association="Self.FK_Ticket_Employee_closed_by">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Ticket" EntitySet="Ticket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_Employee_opened_by" Association="Self.FK_Ticket_Employee_opened_by">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Ticket" EntitySet="Ticket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_TicketType" Association="Self.FK_Ticket_TicketType">
+            <End Role="TicketType" EntitySet="TicketType" />
+            <End Role="Ticket" EntitySet="Ticket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Token_Employee" Association="Self.FK_Token_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Token" EntitySet="Token" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GuestBookModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Charge">
+          <Key>
+            <PropertyRef Name="charge_number" />
+          </Key>
+          <Property Name="charge_number" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="invoice_number" Type="Int32" Nullable="false" />
+          <Property Name="amount" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="charge_date" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Invoice" Relationship="Self.FK_Charge_Invoice" FromRole="Charge" ToRole="Invoice" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="employee_id" />
+          </Key>
+          <Property Name="employee_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="first_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="phone_number" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="password_hash" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="salt" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="access_level" Type="Byte" Nullable="false" />
+          <Property Name="reset_key" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="JobTitle" Relationship="Self.FK_Employee_JobTitle" FromRole="Employee" ToRole="JobTitle" />
+          <NavigationProperty Name="EmployeeHasPermissions" Relationship="Self.FK_EmployeeHasPermission_Employee" FromRole="Employee" ToRole="EmployeeHasPermission" />
+          <NavigationProperty Name="Logs" Relationship="Self.FK_Log_Employee" FromRole="Employee" ToRole="Log" />
+          <NavigationProperty Name="Tickets" Relationship="Self.FK_Ticket_Employee_assigned_to" FromRole="Employee" ToRole="Ticket" />
+          <NavigationProperty Name="Tickets1" Relationship="Self.FK_Ticket_Employee_closed_by" FromRole="Employee" ToRole="Ticket" />
+          <NavigationProperty Name="Tickets2" Relationship="Self.FK_Ticket_Employee_opened_by" FromRole="Employee" ToRole="Ticket" />
+          <NavigationProperty Name="Tokens" Relationship="Self.FK_Token_Employee" FromRole="Employee" ToRole="Token" />
+        </EntityType>
+        <EntityType Name="EmployeeHasPermission">
+          <Key>
+            <PropertyRef Name="employee_id" />
+            <PropertyRef Name="permission_name" />
+          </Key>
+          <Property Name="employee_id" Type="Int32" Nullable="false" />
+          <Property Name="permission_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="priority" Type="Byte" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_EmployeeHasPermission_Employee" FromRole="EmployeeHasPermission" ToRole="Employee" />
+          <NavigationProperty Name="Permission" Relationship="Self.FK_EmployeeHasPermission_Permission" FromRole="EmployeeHasPermission" ToRole="Permission" />
+        </EntityType>
+        <EntityType Name="Guest">
+          <Key>
+            <PropertyRef Name="guest_id" />
+          </Key>
+          <Property Name="guest_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="first_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="phone_number" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Reservations" Relationship="Self.FK_Reservation_Guest" FromRole="Guest" ToRole="Reservation" />
+        </EntityType>
+        <EntityType Name="Invoice">
+          <Key>
+            <PropertyRef Name="invoice_number" />
+          </Key>
+          <Property Name="invoice_number" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="reservation_number" Type="Int32" Nullable="false" />
+          <Property Name="paid" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Charges" Relationship="Self.FK_Charge_Invoice" FromRole="Invoice" ToRole="Charge" />
+          <NavigationProperty Name="Reservation" Relationship="Self.FK_Invoice_Reservation" FromRole="Invoice" ToRole="Reservation" />
+        </EntityType>
+        <EntityType Name="JobTitle">
+          <Key>
+            <PropertyRef Name="access_level" />
+          </Key>
+          <Property Name="access_level" Type="Byte" Nullable="false" />
+          <Property Name="title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_Employee_JobTitle" FromRole="JobTitle" ToRole="Employee" />
+          <NavigationProperty Name="Permissions" Relationship="Self.FK_Permission_JobTitle" FromRole="JobTitle" ToRole="Permission" />
+        </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="log_id" />
+          </Key>
+          <Property Name="log_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="log_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="occured_at" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="employee_id" Type="Int32" />
+          <Property Name="message" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="workstation" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="event" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Log_Employee" FromRole="Log" ToRole="Employee" />
+          <NavigationProperty Name="LogType" Relationship="Self.FK_Log_LogType" FromRole="Log" ToRole="LogType" />
+        </EntityType>
+        <EntityType Name="LogType">
+          <Key>
+            <PropertyRef Name="log_type" />
+          </Key>
+          <Property Name="log_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Logs" Relationship="Self.FK_Log_LogType" FromRole="LogType" ToRole="Log" />
+        </EntityType>
+        <EntityType Name="Permission">
+          <Key>
+            <PropertyRef Name="permission_name" />
+          </Key>
+          <Property Name="permission_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="access_level" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="EmployeeHasPermissions" Relationship="Self.FK_EmployeeHasPermission_Permission" FromRole="Permission" ToRole="EmployeeHasPermission" />
+          <NavigationProperty Name="JobTitle" Relationship="Self.FK_Permission_JobTitle" FromRole="Permission" ToRole="JobTitle" />
+        </EntityType>
+        <EntityType Name="Reservation">
+          <Key>
+            <PropertyRef Name="reservation_number" />
+          </Key>
+          <Property Name="reservation_number" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="guest_id" Type="Int32" Nullable="false" />
+          <Property Name="start_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="end_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="checked_in" Type="Boolean" Nullable="false" />
+          <Property Name="checked_out" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Guest" Relationship="Self.FK_Reservation_Guest" FromRole="Reservation" ToRole="Guest" />
+          <NavigationProperty Name="Invoices" Relationship="Self.FK_Invoice_Reservation" FromRole="Reservation" ToRole="Invoice" />
+          <NavigationProperty Name="RoomForReservations" Relationship="Self.FK_RoomForReservation_Reservation" FromRole="Reservation" ToRole="RoomForReservation" />
+        </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="room_number" />
+          </Key>
+          <Property Name="room_number" Type="String" MaxLength="8" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="room_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="max_occupancy" Type="Int16" Nullable="false" />
+          <Property Name="last_cleaned" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="RoomType" Relationship="Self.FK_Room_RoomType" FromRole="Room" ToRole="RoomType" />
+          <NavigationProperty Name="RoomForReservations" Relationship="Self.FK_RoomForReservation_Room" FromRole="Room" ToRole="RoomForReservation" />
+          <NavigationProperty Name="Tickets" Relationship="Self.RoomForTicket" FromRole="Room" ToRole="Ticket" />
+        </EntityType>
+        <EntityType Name="RoomForReservation">
+          <Key>
+            <PropertyRef Name="reservation_number" />
+            <PropertyRef Name="room_number" />
+          </Key>
+          <Property Name="reservation_number" Type="Int32" Nullable="false" />
+          <Property Name="room_number" Type="String" MaxLength="8" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="cost_for_stay" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="Reservation" Relationship="Self.FK_RoomForReservation_Reservation" FromRole="RoomForReservation" ToRole="Reservation" />
+          <NavigationProperty Name="Room" Relationship="Self.FK_RoomForReservation_Room" FromRole="RoomForReservation" ToRole="Room" />
+        </EntityType>
+        <EntityType Name="RoomType">
+          <Key>
+            <PropertyRef Name="room_type" />
+          </Key>
+          <Property Name="room_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="cost_per_day" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="guest_room" Type="Boolean" Nullable="false" />
+          <Property Name="rentable" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Rooms" Relationship="Self.FK_Room_RoomType" FromRole="RoomType" ToRole="Room" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Ticket">
+          <Key>
+            <PropertyRef Name="ticket_number" />
+          </Key>
+          <Property Name="ticket_number" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ticket_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="opened_by" Type="Int32" />
+          <Property Name="assigned_to" Type="Int32" />
+          <Property Name="closed_by" Type="Int32" />
+          <Property Name="title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="date_opened" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="date_closed" Type="DateTime" Precision="3" />
+          <Property Name="priority" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="completed" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Ticket_Employee_assigned_to" FromRole="Ticket" ToRole="Employee" />
+          <NavigationProperty Name="Employee1" Relationship="Self.FK_Ticket_Employee_closed_by" FromRole="Ticket" ToRole="Employee" />
+          <NavigationProperty Name="Employee2" Relationship="Self.FK_Ticket_Employee_opened_by" FromRole="Ticket" ToRole="Employee" />
+          <NavigationProperty Name="TicketType" Relationship="Self.FK_Ticket_TicketType" FromRole="Ticket" ToRole="TicketType" />
+          <NavigationProperty Name="Rooms" Relationship="Self.RoomForTicket" FromRole="Ticket" ToRole="Room" />
+        </EntityType>
+        <EntityType Name="TicketType">
+          <Key>
+            <PropertyRef Name="ticket_type" />
+          </Key>
+          <Property Name="ticket_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Tickets" Relationship="Self.FK_Ticket_TicketType" FromRole="TicketType" ToRole="Ticket" />
+        </EntityType>
+        <EntityType Name="Token">
+          <Key>
+            <PropertyRef Name="token_id" />
+          </Key>
+          <Property Name="token_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="token1" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="creation_date" Type="DateTime" Precision="3" />
+          <Property Name="employee_id" Type="Int32" />
+          <Property Name="expiration_date" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Token_Employee" FromRole="Token" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="BookedRoom">
+          <Key>
+            <PropertyRef Name="reservation_number" />
+            <PropertyRef Name="room_number" />
+            <PropertyRef Name="room_type" />
+            <PropertyRef Name="cost_for_stay" />
+            <PropertyRef Name="guest_id" />
+            <PropertyRef Name="start_date" />
+            <PropertyRef Name="end_date" />
+          </Key>
+          <Property Name="reservation_number" Type="Int32" Nullable="false" />
+          <Property Name="room_number" Type="String" MaxLength="8" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="room_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="cost_for_stay" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="guest_id" Type="Int32" Nullable="false" />
+          <Property Name="start_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="end_date" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="CheckInList">
+          <Key>
+            <PropertyRef Name="first_name" />
+            <PropertyRef Name="start_date" />
+            <PropertyRef Name="end_date" />
+            <PropertyRef Name="reservation_number" />
+            <PropertyRef Name="guest_id" />
+            <PropertyRef Name="room_number" />
+            <PropertyRef Name="cost_for_stay" />
+          </Key>
+          <Property Name="first_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="phone_number" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="start_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="end_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="reservation_number" Type="Int32" Nullable="false" />
+          <Property Name="guest_id" Type="Int32" Nullable="false" />
+          <Property Name="room_number" Type="String" MaxLength="8" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="cost_for_stay" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CheckOutList">
+          <Key>
+            <PropertyRef Name="guest_id" />
+            <PropertyRef Name="first_name" />
+            <PropertyRef Name="reservation_number" />
+            <PropertyRef Name="start_date" />
+            <PropertyRef Name="end_date" />
+            <PropertyRef Name="room_number" />
+            <PropertyRef Name="cost_for_stay" />
+          </Key>
+          <Property Name="guest_id" Type="Int32" Nullable="false" />
+          <Property Name="first_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="phone_number" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="reservation_number" Type="Int32" Nullable="false" />
+          <Property Name="start_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="end_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="room_number" Type="String" MaxLength="8" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="cost_for_stay" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HousekeepingTicketList">
+          <Key>
+            <PropertyRef Name="ticket_number" />
+            <PropertyRef Name="ticket_type" />
+            <PropertyRef Name="opened_by" />
+            <PropertyRef Name="title" />
+            <PropertyRef Name="date_opened" />
+            <PropertyRef Name="completed" />
+            <PropertyRef Name="room_number" />
+            <PropertyRef Name="Expr1" />
+          </Key>
+          <Property Name="ticket_number" Type="Int32" Nullable="false" />
+          <Property Name="ticket_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="opened_by" Type="Int32" Nullable="false" />
+          <Property Name="assigned_to" Type="Int32" />
+          <Property Name="closed_by" Type="Int32" />
+          <Property Name="title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="date_opened" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="date_closed" Type="DateTime" Precision="3" />
+          <Property Name="priority" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="completed" Type="Boolean" Nullable="false" />
+          <Property Name="room_number" Type="String" MaxLength="8" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Expr1" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MaintenanceTicketList">
+          <Key>
+            <PropertyRef Name="ticket_number" />
+            <PropertyRef Name="ticket_type" />
+            <PropertyRef Name="opened_by" />
+            <PropertyRef Name="title" />
+            <PropertyRef Name="date_opened" />
+            <PropertyRef Name="completed" />
+            <PropertyRef Name="room_number" />
+            <PropertyRef Name="Expr1" />
+          </Key>
+          <Property Name="ticket_number" Type="Int32" Nullable="false" />
+          <Property Name="ticket_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="opened_by" Type="Int32" Nullable="false" />
+          <Property Name="assigned_to" Type="Int32" />
+          <Property Name="closed_by" Type="Int32" />
+          <Property Name="title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="date_opened" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="date_closed" Type="DateTime" Precision="3" />
+          <Property Name="priority" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="completed" Type="Boolean" Nullable="false" />
+          <Property Name="room_number" Type="String" MaxLength="8" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Expr1" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OutstandingInvoice">
+          <Key>
+            <PropertyRef Name="invoice_number" />
+            <PropertyRef Name="guest_id" />
+            <PropertyRef Name="charge_number" />
+            <PropertyRef Name="amount" />
+            <PropertyRef Name="first_name" />
+          </Key>
+          <Property Name="invoice_number" Type="Int32" Nullable="false" />
+          <Property Name="guest_id" Type="Int32" Nullable="false" />
+          <Property Name="charge_number" Type="Int32" Nullable="false" />
+          <Property Name="amount" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="charge_date" Type="DateTime" Precision="3" />
+          <Property Name="first_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="phone_number" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_Charge_Invoice">
+          <End Role="Invoice" Type="Self.Invoice" Multiplicity="1" />
+          <End Role="Charge" Type="Self.Charge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoice">
+              <PropertyRef Name="invoice_number" />
+            </Principal>
+            <Dependent Role="Charge">
+              <PropertyRef Name="invoice_number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_JobTitle">
+          <End Role="JobTitle" Type="Self.JobTitle" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JobTitle">
+              <PropertyRef Name="access_level" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="access_level" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeHasPermission_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EmployeeHasPermission" Type="Self.EmployeeHasPermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="employee_id" />
+            </Principal>
+            <Dependent Role="EmployeeHasPermission">
+              <PropertyRef Name="employee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Log_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Log" Type="Self.Log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="employee_id" />
+            </Principal>
+            <Dependent Role="Log">
+              <PropertyRef Name="employee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_Employee_assigned_to">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="employee_id" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="assigned_to" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_Employee_closed_by">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="employee_id" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="closed_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_Employee_opened_by">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="employee_id" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="opened_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Token_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Token" Type="Self.Token" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="employee_id" />
+            </Principal>
+            <Dependent Role="Token">
+              <PropertyRef Name="employee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeHasPermission_Permission">
+          <End Role="Permission" Type="Self.Permission" Multiplicity="1" />
+          <End Role="EmployeeHasPermission" Type="Self.EmployeeHasPermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permission">
+              <PropertyRef Name="permission_name" />
+            </Principal>
+            <Dependent Role="EmployeeHasPermission">
+              <PropertyRef Name="permission_name" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservation_Guest">
+          <End Role="Guest" Type="Self.Guest" Multiplicity="1" />
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Guest">
+              <PropertyRef Name="guest_id" />
+            </Principal>
+            <Dependent Role="Reservation">
+              <PropertyRef Name="guest_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Reservation">
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="1" />
+          <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reservation">
+              <PropertyRef Name="reservation_number" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="reservation_number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Permission_JobTitle">
+          <End Role="JobTitle" Type="Self.JobTitle" Multiplicity="1" />
+          <End Role="Permission" Type="Self.Permission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JobTitle">
+              <PropertyRef Name="access_level" />
+            </Principal>
+            <Dependent Role="Permission">
+              <PropertyRef Name="access_level" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Log_LogType">
+          <End Role="LogType" Type="Self.LogType" Multiplicity="1" />
+          <End Role="Log" Type="Self.Log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LogType">
+              <PropertyRef Name="log_type" />
+            </Principal>
+            <Dependent Role="Log">
+              <PropertyRef Name="log_type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomForReservation_Reservation">
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="1" />
+          <End Role="RoomForReservation" Type="Self.RoomForReservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reservation">
+              <PropertyRef Name="reservation_number" />
+            </Principal>
+            <Dependent Role="RoomForReservation">
+              <PropertyRef Name="reservation_number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Room_RoomType">
+          <End Role="RoomType" Type="Self.RoomType" Multiplicity="1" />
+          <End Role="Room" Type="Self.Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoomType">
+              <PropertyRef Name="room_type" />
+            </Principal>
+            <Dependent Role="Room">
+              <PropertyRef Name="room_type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomForReservation_Room">
+          <End Role="Room" Type="Self.Room" Multiplicity="1" />
+          <End Role="RoomForReservation" Type="Self.RoomForReservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="room_number" />
+            </Principal>
+            <Dependent Role="RoomForReservation">
+              <PropertyRef Name="room_number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_TicketType">
+          <End Role="TicketType" Type="Self.TicketType" Multiplicity="1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketType">
+              <PropertyRef Name="ticket_type" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="ticket_type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RoomForTicket">
+          <End Role="Room" Type="Self.Room" Multiplicity="*" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="GuestBookEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Charges" EntityType="Self.Charge" />
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <EntitySet Name="EmployeeHasPermissions" EntityType="Self.EmployeeHasPermission" />
+          <EntitySet Name="Guests" EntityType="Self.Guest" />
+          <EntitySet Name="Invoices" EntityType="Self.Invoice" />
+          <EntitySet Name="JobTitles" EntityType="Self.JobTitle" />
+          <EntitySet Name="Logs" EntityType="Self.Log" />
+          <EntitySet Name="LogTypes" EntityType="Self.LogType" />
+          <EntitySet Name="Permissions" EntityType="Self.Permission" />
+          <EntitySet Name="Reservations" EntityType="Self.Reservation" />
+          <EntitySet Name="Rooms" EntityType="Self.Room" />
+          <EntitySet Name="RoomForReservations" EntityType="Self.RoomForReservation" />
+          <EntitySet Name="RoomTypes" EntityType="Self.RoomType" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="Tickets" EntityType="Self.Ticket" />
+          <EntitySet Name="TicketTypes" EntityType="Self.TicketType" />
+          <EntitySet Name="Tokens" EntityType="Self.Token" />
+          <EntitySet Name="BookedRooms" EntityType="Self.BookedRoom" />
+          <EntitySet Name="CheckInLists" EntityType="Self.CheckInList" />
+          <EntitySet Name="CheckOutLists" EntityType="Self.CheckOutList" />
+          <EntitySet Name="HousekeepingTicketLists" EntityType="Self.HousekeepingTicketList" />
+          <EntitySet Name="MaintenanceTicketLists" EntityType="Self.MaintenanceTicketList" />
+          <EntitySet Name="OutstandingInvoices" EntityType="Self.OutstandingInvoice" />
+          <AssociationSet Name="FK_Charge_Invoice" Association="Self.FK_Charge_Invoice">
+            <End Role="Invoice" EntitySet="Invoices" />
+            <End Role="Charge" EntitySet="Charges" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_JobTitle" Association="Self.FK_Employee_JobTitle">
+            <End Role="JobTitle" EntitySet="JobTitles" />
+            <End Role="Employee" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeHasPermission_Employee" Association="Self.FK_EmployeeHasPermission_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeHasPermission" EntitySet="EmployeeHasPermissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Log_Employee" Association="Self.FK_Log_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Log" EntitySet="Logs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_Employee_assigned_to" Association="Self.FK_Ticket_Employee_assigned_to">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Ticket" EntitySet="Tickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_Employee_closed_by" Association="Self.FK_Ticket_Employee_closed_by">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Ticket" EntitySet="Tickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_Employee_opened_by" Association="Self.FK_Ticket_Employee_opened_by">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Ticket" EntitySet="Tickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Token_Employee" Association="Self.FK_Token_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Token" EntitySet="Tokens" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeHasPermission_Permission" Association="Self.FK_EmployeeHasPermission_Permission">
+            <End Role="Permission" EntitySet="Permissions" />
+            <End Role="EmployeeHasPermission" EntitySet="EmployeeHasPermissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservation_Guest" Association="Self.FK_Reservation_Guest">
+            <End Role="Guest" EntitySet="Guests" />
+            <End Role="Reservation" EntitySet="Reservations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Reservation" Association="Self.FK_Invoice_Reservation">
+            <End Role="Reservation" EntitySet="Reservations" />
+            <End Role="Invoice" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Permission_JobTitle" Association="Self.FK_Permission_JobTitle">
+            <End Role="JobTitle" EntitySet="JobTitles" />
+            <End Role="Permission" EntitySet="Permissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Log_LogType" Association="Self.FK_Log_LogType">
+            <End Role="LogType" EntitySet="LogTypes" />
+            <End Role="Log" EntitySet="Logs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomForReservation_Reservation" Association="Self.FK_RoomForReservation_Reservation">
+            <End Role="Reservation" EntitySet="Reservations" />
+            <End Role="RoomForReservation" EntitySet="RoomForReservations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_RoomType" Association="Self.FK_Room_RoomType">
+            <End Role="RoomType" EntitySet="RoomTypes" />
+            <End Role="Room" EntitySet="Rooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomForReservation_Room" Association="Self.FK_RoomForReservation_Room">
+            <End Role="Room" EntitySet="Rooms" />
+            <End Role="RoomForReservation" EntitySet="RoomForReservations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_TicketType" Association="Self.FK_Ticket_TicketType">
+            <End Role="TicketType" EntitySet="TicketTypes" />
+            <End Role="Ticket" EntitySet="Tickets" />
+          </AssociationSet>
+          <AssociationSet Name="RoomForTicket" Association="Self.RoomForTicket">
+            <End Role="Room" EntitySet="Rooms" />
+            <End Role="Ticket" EntitySet="Tickets" />
+          </AssociationSet>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(GuestBookModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(GuestBookModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+          <FunctionImport Name="spAddEmployee">
+            <Parameter Name="first_name" Mode="In" Type="String" />
+            <Parameter Name="last_name" Mode="In" Type="String" />
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="phone_number" Mode="In" Type="String" />
+            <Parameter Name="password_hash" Mode="In" Type="String" />
+            <Parameter Name="salt" Mode="In" Type="String" />
+            <Parameter Name="access_level" Mode="In" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="spAddPermissionForEmployee">
+            <Parameter Name="employee_id" Mode="In" Type="Int32" />
+            <Parameter Name="permission_name" Mode="In" Type="String" />
+            <Parameter Name="priority" Mode="In" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="spAddRoomToReservation">
+            <Parameter Name="reservation_number" Mode="In" Type="Int32" />
+            <Parameter Name="room_type" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spCancelReservation">
+          <Parameter Name="reservation_number" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spChangePermissionPriorityForEmployee">
+            <Parameter Name="employee_id" Mode="In" Type="Int32" />
+            <Parameter Name="permission_name" Mode="In" Type="String" />
+            <Parameter Name="new_priority" Mode="In" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="spCreateInvoice">
+          <Parameter Name="reservation_number" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spCreateReservation">
+            <Parameter Name="guest_id" Mode="In" Type="Int32" />
+            <Parameter Name="start_date" Mode="In" Type="DateTime" />
+            <Parameter Name="end_date" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="spRemovePermissionForEmployee">
+            <Parameter Name="employee_id" Mode="In" Type="Int32" />
+            <Parameter Name="permission_name" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spRemoveRoomFromReservation">
+            <Parameter Name="reservation_number" Mode="In" Type="Int32" />
+            <Parameter Name="room_type" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spShowAllReservations" ReturnType="Collection(GuestBookModel.spShowAllReservations_Result)">
+            <Parameter Name="start_date" Mode="In" Type="DateTime" />
+            <Parameter Name="end_date" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="spShowAvailableRooms" ReturnType="Collection(GuestBookModel.spShowAvailableRooms_Result)">
+            <Parameter Name="start_date" Mode="In" Type="DateTime" />
+            <Parameter Name="end_date" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="spShowEmployeePermissions" ReturnType="Collection(GuestBookModel.spShowEmployeePermissions_Result)">
+          <Parameter Name="employee_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spShowRoomsWithReservation" ReturnType="Collection(GuestBookModel.spShowRoomsWithReservation_Result)">
+          <Parameter Name="reservation_number" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spUpdateEmployee">
+            <Parameter Name="employee_id" Mode="In" Type="Int32" />
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="first_name" Mode="In" Type="String" />
+            <Parameter Name="last_name" Mode="In" Type="String" />
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="phone_number" Mode="In" Type="String" />
+            <Parameter Name="password_hash" Mode="In" Type="String" />
+            <Parameter Name="salt" Mode="In" Type="String" />
+            <Parameter Name="access_level" Mode="In" Type="Byte" />
+            <Parameter Name="reset_key" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spCreateHousekeepingTicketFromReservation">
+            <Parameter Name="reservation_number" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="spShowAllReservations_Result">
+          <Property Type="String" Name="first_name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="last_name" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="phone_number" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="reservation_number" Nullable="false" />
+          <Property Type="DateTime" Name="start_date" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="end_date" Nullable="false" Precision="23" />
+          <Property Type="Boolean" Name="checked_in" Nullable="false" />
+          <Property Type="Boolean" Name="checked_out" Nullable="false" />
+          <Property Type="String" Name="room_number" Nullable="false" MaxLength="8" />
+          <Property Type="Decimal" Name="cost_for_stay" Nullable="false" Precision="19" Scale="4" />
+        </ComplexType>
+        <ComplexType Name="spShowAvailableRooms_Result">
+          <Property Type="String" Name="room_number" Nullable="false" MaxLength="8" />
+          <Property Type="String" Name="room_type" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="cost_per_day" Nullable="false" Precision="19" Scale="4" />
+        </ComplexType>
+        <ComplexType Name="spShowEmployeePermissions_Result">
+          <Property Type="Int32" Name="employee_id" Nullable="false" />
+          <Property Type="String" Name="permission_name" Nullable="false" MaxLength="50" />
+          <Property Type="Byte" Name="priority" Nullable="true" />
+          <Property Type="String" Name="description" Nullable="true" MaxLength="Max" />
+        </ComplexType>
+        <ComplexType Name="spShowRoomsWithReservation_Result">
+          <Property Type="String" Name="room_number" Nullable="false" MaxLength="8" />
+          <Property Type="String" Name="room_type" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="description" Nullable="true" MaxLength="Max" />
+          <Property Type="Decimal" Name="cost_for_stay" Nullable="false" Precision="19" Scale="4" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GuestBookModelStoreContainer" CdmEntityContainer="GuestBookEntities">
+          <EntitySetMapping Name="Charges">
+            <EntityTypeMapping TypeName="GuestBookModel.Charge">
+              <MappingFragment StoreEntitySet="Charge">
+                <ScalarProperty Name="charge_number" ColumnName="charge_number" />
+                <ScalarProperty Name="invoice_number" ColumnName="invoice_number" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="charge_date" ColumnName="charge_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="GuestBookModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phone_number" ColumnName="phone_number" />
+                <ScalarProperty Name="password_hash" ColumnName="password_hash" />
+                <ScalarProperty Name="salt" ColumnName="salt" />
+                <ScalarProperty Name="access_level" ColumnName="access_level" />
+                <ScalarProperty Name="reset_key" ColumnName="reset_key" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeHasPermissions">
+            <EntityTypeMapping TypeName="GuestBookModel.EmployeeHasPermission">
+              <MappingFragment StoreEntitySet="EmployeeHasPermission">
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="permission_name" ColumnName="permission_name" />
+                <ScalarProperty Name="priority" ColumnName="priority" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Guests">
+            <EntityTypeMapping TypeName="GuestBookModel.Guest">
+              <MappingFragment StoreEntitySet="Guest">
+                <ScalarProperty Name="guest_id" ColumnName="guest_id" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phone_number" ColumnName="phone_number" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Invoices">
+            <EntityTypeMapping TypeName="GuestBookModel.Invoice">
+              <MappingFragment StoreEntitySet="Invoice">
+                <ScalarProperty Name="invoice_number" ColumnName="invoice_number" />
+                <ScalarProperty Name="reservation_number" ColumnName="reservation_number" />
+                <ScalarProperty Name="paid" ColumnName="paid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JobTitles">
+            <EntityTypeMapping TypeName="GuestBookModel.JobTitle">
+              <MappingFragment StoreEntitySet="JobTitle">
+                <ScalarProperty Name="access_level" ColumnName="access_level" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logs">
+            <EntityTypeMapping TypeName="GuestBookModel.Log">
+              <MappingFragment StoreEntitySet="Log">
+                <ScalarProperty Name="log_id" ColumnName="log_id" />
+                <ScalarProperty Name="log_type" ColumnName="log_type" />
+                <ScalarProperty Name="occured_at" ColumnName="occured_at" />
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="message" ColumnName="message" />
+                <ScalarProperty Name="workstation" ColumnName="workstation" />
+                <ScalarProperty Name="event" ColumnName="event" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LogTypes">
+            <EntityTypeMapping TypeName="GuestBookModel.LogType">
+              <MappingFragment StoreEntitySet="LogType">
+                <ScalarProperty Name="log_type" ColumnName="log_type" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Permissions">
+            <EntityTypeMapping TypeName="GuestBookModel.Permission">
+              <MappingFragment StoreEntitySet="Permission">
+                <ScalarProperty Name="permission_name" ColumnName="permission_name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="access_level" ColumnName="access_level" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reservations">
+            <EntityTypeMapping TypeName="GuestBookModel.Reservation">
+              <MappingFragment StoreEntitySet="Reservation">
+                <ScalarProperty Name="reservation_number" ColumnName="reservation_number" />
+                <ScalarProperty Name="guest_id" ColumnName="guest_id" />
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="checked_in" ColumnName="checked_in" />
+                <ScalarProperty Name="checked_out" ColumnName="checked_out" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rooms">
+            <EntityTypeMapping TypeName="GuestBookModel.Room">
+              <MappingFragment StoreEntitySet="Room">
+                <ScalarProperty Name="room_number" ColumnName="room_number" />
+                <ScalarProperty Name="room_type" ColumnName="room_type" />
+                <ScalarProperty Name="max_occupancy" ColumnName="max_occupancy" />
+                <ScalarProperty Name="last_cleaned" ColumnName="last_cleaned" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoomForReservations">
+            <EntityTypeMapping TypeName="GuestBookModel.RoomForReservation">
+              <MappingFragment StoreEntitySet="RoomForReservation">
+                <ScalarProperty Name="reservation_number" ColumnName="reservation_number" />
+                <ScalarProperty Name="room_number" ColumnName="room_number" />
+                <ScalarProperty Name="cost_for_stay" ColumnName="cost_for_stay" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoomTypes">
+            <EntityTypeMapping TypeName="GuestBookModel.RoomType">
+              <MappingFragment StoreEntitySet="RoomType">
+                <ScalarProperty Name="room_type" ColumnName="room_type" />
+                <ScalarProperty Name="cost_per_day" ColumnName="cost_per_day" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="guest_room" ColumnName="guest_room" />
+                <ScalarProperty Name="rentable" ColumnName="rentable" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="GuestBookModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tickets">
+            <EntityTypeMapping TypeName="GuestBookModel.Ticket">
+              <MappingFragment StoreEntitySet="Ticket">
+                <ScalarProperty Name="ticket_number" ColumnName="ticket_number" />
+                <ScalarProperty Name="ticket_type" ColumnName="ticket_type" />
+                <ScalarProperty Name="opened_by" ColumnName="opened_by" />
+                <ScalarProperty Name="assigned_to" ColumnName="assigned_to" />
+                <ScalarProperty Name="closed_by" ColumnName="closed_by" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="date_opened" ColumnName="date_opened" />
+                <ScalarProperty Name="date_closed" ColumnName="date_closed" />
+                <ScalarProperty Name="priority" ColumnName="priority" />
+                <ScalarProperty Name="completed" ColumnName="completed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TicketTypes">
+            <EntityTypeMapping TypeName="GuestBookModel.TicketType">
+              <MappingFragment StoreEntitySet="TicketType">
+                <ScalarProperty Name="ticket_type" ColumnName="ticket_type" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tokens">
+            <EntityTypeMapping TypeName="GuestBookModel.Token">
+              <MappingFragment StoreEntitySet="Token">
+                <ScalarProperty Name="token_id" ColumnName="token_id" />
+                <ScalarProperty Name="token1" ColumnName="token" />
+                <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="expiration_date" ColumnName="expiration_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BookedRooms">
+            <EntityTypeMapping TypeName="GuestBookModel.BookedRoom">
+              <MappingFragment StoreEntitySet="BookedRoom">
+                <ScalarProperty Name="reservation_number" ColumnName="reservation_number" />
+                <ScalarProperty Name="room_number" ColumnName="room_number" />
+                <ScalarProperty Name="room_type" ColumnName="room_type" />
+                <ScalarProperty Name="cost_for_stay" ColumnName="cost_for_stay" />
+                <ScalarProperty Name="guest_id" ColumnName="guest_id" />
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CheckInLists">
+            <EntityTypeMapping TypeName="GuestBookModel.CheckInList">
+              <MappingFragment StoreEntitySet="CheckInList">
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phone_number" ColumnName="phone_number" />
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="reservation_number" ColumnName="reservation_number" />
+                <ScalarProperty Name="guest_id" ColumnName="guest_id" />
+                <ScalarProperty Name="room_number" ColumnName="room_number" />
+                <ScalarProperty Name="cost_for_stay" ColumnName="cost_for_stay" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CheckOutLists">
+            <EntityTypeMapping TypeName="GuestBookModel.CheckOutList">
+              <MappingFragment StoreEntitySet="CheckOutList">
+                <ScalarProperty Name="guest_id" ColumnName="guest_id" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phone_number" ColumnName="phone_number" />
+                <ScalarProperty Name="reservation_number" ColumnName="reservation_number" />
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="room_number" ColumnName="room_number" />
+                <ScalarProperty Name="cost_for_stay" ColumnName="cost_for_stay" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HousekeepingTicketLists">
+            <EntityTypeMapping TypeName="GuestBookModel.HousekeepingTicketList">
+              <MappingFragment StoreEntitySet="HousekeepingTicketList">
+                <ScalarProperty Name="ticket_number" ColumnName="ticket_number" />
+                <ScalarProperty Name="ticket_type" ColumnName="ticket_type" />
+                <ScalarProperty Name="opened_by" ColumnName="opened_by" />
+                <ScalarProperty Name="assigned_to" ColumnName="assigned_to" />
+                <ScalarProperty Name="closed_by" ColumnName="closed_by" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="date_opened" ColumnName="date_opened" />
+                <ScalarProperty Name="date_closed" ColumnName="date_closed" />
+                <ScalarProperty Name="priority" ColumnName="priority" />
+                <ScalarProperty Name="completed" ColumnName="completed" />
+                <ScalarProperty Name="room_number" ColumnName="room_number" />
+                <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MaintenanceTicketLists">
+            <EntityTypeMapping TypeName="GuestBookModel.MaintenanceTicketList">
+              <MappingFragment StoreEntitySet="MaintenanceTicketList">
+                <ScalarProperty Name="ticket_number" ColumnName="ticket_number" />
+                <ScalarProperty Name="ticket_type" ColumnName="ticket_type" />
+                <ScalarProperty Name="opened_by" ColumnName="opened_by" />
+                <ScalarProperty Name="assigned_to" ColumnName="assigned_to" />
+                <ScalarProperty Name="closed_by" ColumnName="closed_by" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="date_opened" ColumnName="date_opened" />
+                <ScalarProperty Name="date_closed" ColumnName="date_closed" />
+                <ScalarProperty Name="priority" ColumnName="priority" />
+                <ScalarProperty Name="completed" ColumnName="completed" />
+                <ScalarProperty Name="room_number" ColumnName="room_number" />
+                <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OutstandingInvoices">
+            <EntityTypeMapping TypeName="GuestBookModel.OutstandingInvoice">
+              <MappingFragment StoreEntitySet="OutstandingInvoice">
+                <ScalarProperty Name="invoice_number" ColumnName="invoice_number" />
+                <ScalarProperty Name="guest_id" ColumnName="guest_id" />
+                <ScalarProperty Name="charge_number" ColumnName="charge_number" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="charge_date" ColumnName="charge_date" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phone_number" ColumnName="phone_number" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="RoomForTicket" TypeName="GuestBookModel.RoomForTicket" StoreEntitySet="RoomForTicket">
+            <EndProperty Name="Room">
+              <ScalarProperty Name="room_number" ColumnName="room_number" />
+            </EndProperty>
+            <EndProperty Name="Ticket">
+              <ScalarProperty Name="ticket_number" ColumnName="ticket_number" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="GuestBookModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="GuestBookModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="GuestBookModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="GuestBookModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GuestBookModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="GuestBookModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GuestBookModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="GuestBookModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="GuestBookModel.Store.sp_upgraddiagrams" />
+          <FunctionImportMapping FunctionImportName="spAddEmployee" FunctionName="GuestBookModel.Store.spAddEmployee" />
+          <FunctionImportMapping FunctionImportName="spAddPermissionForEmployee" FunctionName="GuestBookModel.Store.spAddPermissionForEmployee" />
+          <FunctionImportMapping FunctionImportName="spAddRoomToReservation" FunctionName="GuestBookModel.Store.spAddRoomToReservation" />
+          <FunctionImportMapping FunctionImportName="spCancelReservation" FunctionName="GuestBookModel.Store.spCancelReservation" />
+          <FunctionImportMapping FunctionImportName="spChangePermissionPriorityForEmployee" FunctionName="GuestBookModel.Store.spChangePermissionPriorityForEmployee" />
+          <FunctionImportMapping FunctionImportName="spCreateInvoice" FunctionName="GuestBookModel.Store.spCreateInvoice" />
+          <FunctionImportMapping FunctionImportName="spCreateReservation" FunctionName="GuestBookModel.Store.spCreateReservation" />
+          <FunctionImportMapping FunctionImportName="spRemovePermissionForEmployee" FunctionName="GuestBookModel.Store.spRemovePermissionForEmployee" />
+          <FunctionImportMapping FunctionImportName="spRemoveRoomFromReservation" FunctionName="GuestBookModel.Store.spRemoveRoomFromReservation" />
+          <FunctionImportMapping FunctionImportName="spShowAllReservations" FunctionName="GuestBookModel.Store.spShowAllReservations">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GuestBookModel.spShowAllReservations_Result">
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phone_number" ColumnName="phone_number" />
+                <ScalarProperty Name="reservation_number" ColumnName="reservation_number" />
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="checked_in" ColumnName="checked_in" />
+                <ScalarProperty Name="checked_out" ColumnName="checked_out" />
+                <ScalarProperty Name="room_number" ColumnName="room_number" />
+                <ScalarProperty Name="cost_for_stay" ColumnName="cost_for_stay" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spShowAvailableRooms" FunctionName="GuestBookModel.Store.spShowAvailableRooms">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GuestBookModel.spShowAvailableRooms_Result">
+                <ScalarProperty Name="room_number" ColumnName="room_number" />
+                <ScalarProperty Name="room_type" ColumnName="room_type" />
+                <ScalarProperty Name="cost_per_day" ColumnName="cost_per_day" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spShowEmployeePermissions" FunctionName="GuestBookModel.Store.spShowEmployeePermissions">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GuestBookModel.spShowEmployeePermissions_Result">
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="permission_name" ColumnName="permission_name" />
+                <ScalarProperty Name="priority" ColumnName="priority" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spShowRoomsWithReservation" FunctionName="GuestBookModel.Store.spShowRoomsWithReservation">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GuestBookModel.spShowRoomsWithReservation_Result">
+                <ScalarProperty Name="room_number" ColumnName="room_number" />
+                <ScalarProperty Name="room_type" ColumnName="room_type" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="cost_for_stay" ColumnName="cost_for_stay" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spUpdateEmployee" FunctionName="GuestBookModel.Store.spUpdateEmployee" />
+          <FunctionImportMapping FunctionImportName="spCreateHousekeepingTicketFromReservation" FunctionName="GuestBookModel.Store.spCreateHousekeepingTicketFromReservation" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

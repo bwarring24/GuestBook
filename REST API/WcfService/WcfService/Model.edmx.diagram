@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="cc0d0ab7d04c493a8c9864de0cd7c365" Name="Diagram1" ZoomLevel="64">
+        <EntityTypeShape EntityType="GuestBookModel.Charge" Width="1.5" PointX="17.5" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GuestBookModel.Employee" Width="1.5" PointX="3" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GuestBookModel.EmployeeHasPermission" Width="1.5" PointX="5.25" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="GuestBookModel.Guest" Width="1.5" PointX="10.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GuestBookModel.Invoice" Width="1.5" PointX="15.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GuestBookModel.JobTitle" Width="1.5" PointX="0.75" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="GuestBookModel.Log" Width="1.5" PointX="5.25" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="GuestBookModel.LogType" Width="1.5" PointX="3" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GuestBookModel.Permission" Width="1.5" PointX="3" PointY="12.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GuestBookModel.Reservation" Width="1.5" PointX="13" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GuestBookModel.Room" Width="1.5" PointX="6" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="GuestBookModel.RoomForReservation" Width="1.5" PointX="15.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GuestBookModel.RoomType" Width="1.5" PointX="3.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GuestBookModel.sysdiagram" Width="1.5" PointX="10.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GuestBookModel.Ticket" Width="1.5" PointX="8.25" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="GuestBookModel.TicketType" Width="1.5" PointX="6" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GuestBookModel.Token" Width="1.5" PointX="5.25" PointY="19.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="GuestBookModel.BookedRoom" Width="1.5" PointX="10.75" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GuestBookModel.CheckInList" Width="1.5" PointX="12.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GuestBookModel.CheckOutList" Width="1.5" PointX="8.75" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GuestBookModel.HousekeepingTicketList" Width="1.5" PointX="12.75" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GuestBookModel.MaintenanceTicketList" Width="1.5" PointX="0.75" PointY="16.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GuestBookModel.OutstandingInvoice" Width="1.5" PointX="14.75" PointY="7.125" IsExpanded="true" />
+        <AssociationConnector Association="GuestBookModel.FK_Charge_Invoice" ManuallyRouted="false" />
+        <AssociationConnector Association="GuestBookModel.FK_Employee_JobTitle" ManuallyRouted="false" />
+        <AssociationConnector Association="GuestBookModel.FK_EmployeeHasPermission_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="GuestBookModel.FK_Log_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="GuestBookModel.FK_Ticket_Employee_assigned_to" ManuallyRouted="false" />
+        <AssociationConnector Association="GuestBookModel.FK_Ticket_Employee_closed_by" ManuallyRouted="false" />
+        <AssociationConnector Association="GuestBookModel.FK_Ticket_Employee_opened_by" ManuallyRouted="false" />
+        <AssociationConnector Association="GuestBookModel.FK_Token_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="GuestBookModel.FK_EmployeeHasPermission_Permission" ManuallyRouted="false" />
+        <AssociationConnector Association="GuestBookModel.FK_Reservation_Guest" ManuallyRouted="false" />
+        <AssociationConnector Association="GuestBookModel.FK_Invoice_Reservation" ManuallyRouted="false" />
+        <AssociationConnector Association="GuestBookModel.FK_Permission_JobTitle" ManuallyRouted="false" />
+        <AssociationConnector Association="GuestBookModel.FK_Log_LogType" ManuallyRouted="false" />
+        <AssociationConnector Association="GuestBookModel.FK_RoomForReservation_Reservation" ManuallyRouted="false" />
+        <AssociationConnector Association="GuestBookModel.FK_Room_RoomType" ManuallyRouted="false" />
+        <AssociationConnector Association="GuestBookModel.FK_RoomForReservation_Room" ManuallyRouted="false" />
+        <AssociationConnector Association="GuestBookModel.FK_Ticket_TicketType" ManuallyRouted="false" />
+        <AssociationConnector Association="GuestBookModel.RoomForTicket" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

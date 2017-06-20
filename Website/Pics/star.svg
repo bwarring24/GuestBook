@@ -1,0 +1,19 @@
+<?xml version="1.0"?><svg width="640" height="480" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <title/>
+ <defs>
+  <linearGradient id="linearGradient4111">
+   <stop id="stop4112" offset="0" stop-color="#e6da1e"/>
+   <stop id="stop4113" offset="1" stop-color="#7d760f"/>
+  </linearGradient>
+  <linearGradient id="linearGradient1918">
+   <stop id="stop1919" offset="0" stop-opacity="0.313725" stop-color="#000000"/>
+   <stop id="stop1921" offset="1" stop-opacity="0" stop-color="#000000"/>
+  </linearGradient>
+  <radialGradient cx="0.5" cy="0.5" fx="0.505882" fy="0.5" id="radialGradient1502" r="0.5" xlink:href="#linearGradient1918"/>
+  <linearGradient id="linearGradient2312" x1="0.543555" x2="0.360953" xlink:href="#linearGradient4111" y1="1.136533" y2="0.042242"/>
+ </defs>
+ <g>
+  <title>Layer 1</title>
+  <polygon id="polygon3715" points="391.289 347.585 303.379 298.352 215.823 348.224 235.063 248.646 161 180.035 260.8 167.727 302.584 75.4502 345.025 167.42 444.91 179.002 371.339 248.152 391.289 347.585" stroke-width="5" stroke="#04bcf9" fill-rule="evenodd" fill="none"/>
+ </g>
+</svg>
